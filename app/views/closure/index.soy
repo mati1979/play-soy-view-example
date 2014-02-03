@@ -1,0 +1,41 @@
+{namespace pages}
+
+/**
+ * @param headerModel
+ * @param wordsModel
+ */
+{template .index}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>{$headerModel.title}</title>
+        <script type="text/javascript" src="{$headerModel.soyUtilsLink}"></script>
+        <script type="text/javascript" src="{$headerModel.jQueryLink}"></script>
+        <script type="text/javascript" src="/soy?file=template2.soy{if $ij.soyplugin.ajax.soy.hash}&amp;hash={$ij.soyplugin.ajax.soy.hash}{/if}"></script>
+        <script type="text/javascript" src="/assets/javascripts/index.js"></script>
+    </head>
+    <body>
+        Global model vars:<br>
+        <br>
+        soyplugin.global.hot.reload.mode:{soyplugin.global.hot.reload.mode}<br>
+        soyplugin.precompile.templates:{soyplugin.precompile.templates}<br>
+        <br>
+        I18N.VEHICLE.Fuel_Consumption_Combined:{msg meaning="I18N.VEHICLE.Fuel_Consumption_Combined" desc=""}Fuel Consumption Combined{/msg}:<br>
+        <br>
+        Injected Data:<br>
+        ij.email:email:{$ij.email}
+        <br>
+        ij.soyplugin.ajax.soy.hash:{$ij.soyplugin.ajax.soy.hash}
+        <br>
+        <ul>
+                {foreach $word in $wordsModel.words}
+                        <li>{$word}</li>
+                {/foreach}
+        </ul>
+        <div id="box">
+        Hello
+        <div>
+    </body>
+</html>
+{/template}
