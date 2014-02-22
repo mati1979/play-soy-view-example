@@ -16,10 +16,10 @@ public class Application extends Controller {
     private Soy soy;
 
     @Autowired
-    private WordsPagelet wordsPagelet;
+    private HeaderPagelet headerPagelet;
 
     @Autowired
-    private HeaderPagelet headerPagelet;
+    private WordsPagelet wordsPagelet;
 
     public Result index() throws Exception {
         final IndexPageModel indexPageModel = new IndexPageModel();

@@ -7,7 +7,7 @@ publishMavenStyle := true
 parallelExecution := true
 
 libraryDependencies ++= Seq(
-  "com.github.mati1979" % "play-soy-view_2.10" % "0.1",
+  "com.github.mati1979" %% "play-soy-view" % "0.1",
   "org.springframework" % "spring-core" % "4.0.1.RELEASE",
   "org.springframework" % "spring-beans" % "4.0.1.RELEASE",
   "org.springframework" % "spring-context" % "4.0.1.RELEASE",

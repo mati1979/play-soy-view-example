@@ -14,10 +14,7 @@ import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.locale.PlayLocaleProvider;
 import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 import com.google.common.collect.Lists;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import play.Play;
 
 import java.util.ArrayList;

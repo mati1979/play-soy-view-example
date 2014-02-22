@@ -5,7 +5,7 @@
 # Home page
 GET     /                           @controllers.Application.index()
 
-GET     /soy                        @controllers.SoyAjaxController.compile(hash: String ?= "", file: java.util.List[String], locale: String ?= "", disableProcessors: Boolean ?= false)
+GET     /soy                        @com.github.mati1979.play.soyplugin.ajax.SoyAjaxController.compile(hash: String ?= "", file: java.util.List[String], locale: String ?= "", disableProcessors: Boolean ?= false)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
