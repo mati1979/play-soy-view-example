@@ -5,6 +5,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import helper.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import play.api.templates.Html;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -32,7 +33,7 @@ public class ApplicationAsync extends Controller {
 
         };
 
-        return ok(chunks).as("text/html");
+        return ok(chunks).as(Html.empty().contentType());
     }
 
     private ActorRef createMainActor() {
