@@ -33,7 +33,7 @@ public class ApplicationAsync extends Controller {
             @Override
             public void onReady(final Out<String> out) {
                 final ActorRef actorRef = MainActor.create(system);
-                Patterns.ask(actorRef, new MainActor.RequestMessage(request, response, out), 10000);
+                actorRef.tell(new MainActor.RequestMessage(request, response, out), null);
             }
 
         };
