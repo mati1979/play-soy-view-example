@@ -1,6 +1,6 @@
 package controllers;
 
-import actors.RequestMessage;
+import actors.MainActor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import helper.SpringExtension;
@@ -21,19 +21,20 @@ public class ApplicationAsync extends Controller {
     private ActorSystem system;
 
     public Result index() throws Exception {
-        final Http.Request request = request();
-        final Http.Response response = response();
+        final Results.Chunks<String> dataChunks = chunks(request(), response());
 
-        final Results.Chunks<String> chunks = new Results.StringChunks() {
+        return ok(dataChunks).as(Html.empty().contentType());
+    }
+
+    private Results.Chunks<String> chunks(final Http.Request request, final Http.Response response) {
+        return new Results.StringChunks() {
 
             @Override
             public void onReady(final Out<String> out) {
-                createMainActor().tell(new RequestMessage(request, response, out), null);
+                createMainActor().tell(new MainActor.RequestMessage(request, response, out), null);
             }
 
         };
-
-        return ok(chunks).as(Html.empty().contentType());
     }
 
     private ActorRef createMainActor() {

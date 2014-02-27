@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import pagelets.HeaderPagelet;
 import pagelets.WordsPagelet;
+import play.mvc.Http;
+import play.mvc.Results;
 
 import javax.inject.Named;
 
@@ -34,5 +36,32 @@ public class MainActor extends UntypedActor {
         req.getOut().write(soy.html(req.getRequest(), req.getResponse(), "pods.footer.index"));
         req.getOut().close();
     }
+
+    public static class RequestMessage {
+
+        private Http.Request request;
+        private Http.Response response;
+        private Results.Chunks.Out<String> out;
+
+        public RequestMessage(Http.Request request, Http.Response response, Results.Chunks.Out<String> out) {
+            this.request = request;
+            this.response = response;
+            this.out = out;
+        }
+
+        public Results.Chunks.Out<String> getOut() {
+            return out;
+        }
+
+        public Http.Request getRequest() {
+            return request;
+        }
+
+        public Http.Response getResponse() {
+            return response;
+        }
+
+    }
+
 
 }
