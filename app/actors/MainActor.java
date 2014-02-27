@@ -44,7 +44,6 @@ public class MainActor extends UntypedActor {
         return system.actorOf(SpringExtension.SpringExtProvider.get(system).props("MainActor"), "mainActor" + System.currentTimeMillis());
     }
 
-
     public static class RequestMessage {
 
         private Http.Request request;

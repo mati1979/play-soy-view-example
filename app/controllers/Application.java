@@ -1,5 +1,6 @@
 package controllers;
 
+import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
 import com.github.mati1979.play.soyplugin.plugin.Soy;
 import model.IndexPageModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class Application extends Controller {
 
         Thread.sleep(4000);
 
-        return ok(soy.html("pages.index", indexPageModel));
+        return ok(soy.html("pages.index", indexPageModel), PlayConfAccessor.GLOBAL_ENCODING);
     }
 
 }
