@@ -25,9 +25,6 @@ public class MainActor extends UntypedActor {
     @Autowired
     private Soy soy;
 
-    public MainActor() {
-    }
-
     @Override
     public void onReceive(final Object message) throws Exception {
         final RequestMessage req = (RequestMessage) message;
