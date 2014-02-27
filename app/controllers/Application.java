@@ -3,15 +3,14 @@ package controllers;
 import actors.MainActor;
 import actors.RequestMessage;
 import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.pattern.Patterns;
 import com.github.mati1979.play.soyplugin.plugin.Soy;
 import model.IndexPageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pagelets.HeaderPagelet;
 import pagelets.WordsPagelet;
-import play.libs.Akka;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -27,6 +26,9 @@ public class Application extends Controller {
 
     @Autowired
     private WordsPagelet wordsPagelet;
+
+    @Autowired
+    private ActorSystem actorSystem;
 
     public Result normalRender() throws Exception {
         final IndexPageModel indexPageModel = new IndexPageModel();
@@ -46,7 +48,7 @@ public class Application extends Controller {
 
             @Override
             public void onReady(final Out<String> out) {
-                final ActorRef actorRef = Akka.system().actorOf(Props.create(MainActor.class, headerPagelet, wordsPagelet, soy));
+                final ActorRef actorRef = actorSystem.actorOf(Props.create(MainActor.class, headerPagelet, wordsPagelet, soy));
                 actorRef.tell(new RequestMessage(request, response, out), null);
             }
         };

@@ -1,8 +1,11 @@
 package spring;
 
+import akka.actor.ActorSystem;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import play.libs.Akka;
 import soy.PlaySoyConfigExt;
 
 /**
@@ -13,16 +16,13 @@ import soy.PlaySoyConfigExt;
 @ComponentScan({"controllers", "pagelets"})
 public class PlaySoyViewExampleConfig {
 
-//    @Autowired
-//    private ApplicationContext applicationContext;
-//
-//    @Bean
-//    public ActorSystem actorSystem() {
-//        ActorSystem system = Akka.system();
+    @Bean
+    public ActorSystem actorSystem() {
+        ActorSystem system = Akka.system();
 //        // initialize the application context in the Akka Spring Extension
 //        SpringExtProvider.get(system).initialize(applicationContext);
-//
-//        return system;
-//    }
+
+        return system;
+    }
 
 }
