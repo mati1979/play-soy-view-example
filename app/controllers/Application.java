@@ -1,21 +1,19 @@
 package controllers;
 
-import actors.MainActor;
 import actors.RequestMessage;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.actor.Props;
 import com.github.mati1979.play.soyplugin.plugin.Soy;
+import helper.SpringExtension;
 import model.IndexPageModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import pagelets.HeaderPagelet;
 import pagelets.WordsPagelet;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 
-@Service
+@org.springframework.stereotype.Controller
 public class Application extends Controller {
 
     @Autowired
@@ -28,7 +26,7 @@ public class Application extends Controller {
     private WordsPagelet wordsPagelet;
 
     @Autowired
-    private ActorSystem actorSystem;
+    private ActorSystem system;
 
     public Result normalRender() throws Exception {
         final IndexPageModel indexPageModel = new IndexPageModel();
@@ -48,12 +46,16 @@ public class Application extends Controller {
 
             @Override
             public void onReady(final Out<String> out) {
-                final ActorRef actorRef = actorSystem.actorOf(Props.create(MainActor.class, headerPagelet, wordsPagelet, soy));
-                actorRef.tell(new RequestMessage(request, response, out), null);
+                createMainActor().tell(new RequestMessage(request, response, out), null);
             }
+
         };
 
         return ok(chunks).as("text/html");
+    }
+
+    private ActorRef createMainActor() {
+        return system.actorOf(SpringExtension.SpringExtProvider.get(system).props("MainActor"), "mainActor" + System.currentTimeMillis());
     }
 
 }

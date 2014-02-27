@@ -1,3 +1,5 @@
+import akka.actor.ActorSystem;
+import helper.SpringExtension;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import play.Application;
 import play.GlobalSettings;
@@ -23,6 +25,9 @@ public class Global extends GlobalSettings {
         }
 
         this.ctx.refresh();
+
+        ActorSystem system = ctx.getBean(ActorSystem.class);
+        SpringExtension.SpringExtProvider.get(system).initialize(ctx);
     }
 
     @Override

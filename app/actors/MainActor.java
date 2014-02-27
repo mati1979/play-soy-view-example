@@ -2,24 +2,30 @@ package actors;
 
 import akka.actor.UntypedActor;
 import com.github.mati1979.play.soyplugin.plugin.Soy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import pagelets.HeaderPagelet;
 import pagelets.WordsPagelet;
+
+import javax.inject.Named;
 
 /**
  * Created by mszczap on 27.02.14.
  */
+@Named("MainActor")
+@Scope("prototype")
 public class MainActor extends UntypedActor {
 
+    @Autowired
     private HeaderPagelet headerPagelet;
 
+    @Autowired
     private WordsPagelet wordsPagelet;
 
+    @Autowired
     private Soy soy;
 
-    public MainActor(final HeaderPagelet headerPagelet, final WordsPagelet wordsPagelet, final Soy soy) {
-        this.headerPagelet = headerPagelet;
-        this.wordsPagelet = wordsPagelet;
-        this.soy = soy;
+    public MainActor() {
     }
 
     @Override
