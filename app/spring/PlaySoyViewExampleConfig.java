@@ -12,4 +12,17 @@ import soy.PlaySoyConfigExt;
 @Import(PlaySoyConfigExt.class)
 @ComponentScan({"controllers", "pagelets"})
 public class PlaySoyViewExampleConfig {
+
+//    @Autowired
+//    private ApplicationContext applicationContext;
+//
+//    @Bean
+//    public ActorSystem actorSystem() {
+//        ActorSystem system = Akka.system();
+//        // initialize the application context in the Akka Spring Extension
+//        SpringExtProvider.get(system).initialize(applicationContext);
+//
+//        return system;
+//    }
+
 }
