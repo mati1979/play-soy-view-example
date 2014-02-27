@@ -3,6 +3,7 @@ package controllers;
 import actors.MainActor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.pattern.Patterns;
 import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import play.api.templates.Html;
@@ -32,7 +33,7 @@ public class ApplicationAsync extends Controller {
             @Override
             public void onReady(final Out<String> out) {
                 final ActorRef actorRef = MainActor.create(system);
-                actorRef.tell(new MainActor.RequestMessage(request, response, out), null);
+                Patterns.ask(actorRef, new MainActor.RequestMessage(request, response, out), 10000);
             }
 
         };

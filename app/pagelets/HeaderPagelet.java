@@ -15,7 +15,7 @@ public class HeaderPagelet {
         headerModel.setjQueryLink("/assets/bower_components/jquery/jquery.js");
         headerModel.setTitle("Test Title");
 
-        Thread.sleep(2000);
+        //Thread.sleep(2000);
 
         return headerModel;
     }

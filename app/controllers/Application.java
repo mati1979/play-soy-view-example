@@ -6,6 +6,7 @@ import model.IndexPageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import pagelets.HeaderPagelet;
 import pagelets.WordsPagelet;
+import play.api.templates.Html;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -24,9 +25,11 @@ public class Application extends Controller {
     public Result index() throws Exception {
         final IndexPageModel indexPageModel = new IndexPageModel();
         indexPageModel.setHeaderModel(headerPagelet.invoke());
-        indexPageModel.setWordsModel(wordsPagelet.invoke());
+        indexPageModel.setWordsModel(wordsPagelet.invoke().get(10000));
 
         Thread.sleep(4000);
+
+        response().setContentType(Html.empty().contentType());
 
         return ok(soy.html("pages.index", indexPageModel), PlayConfAccessor.GLOBAL_ENCODING);
     }
