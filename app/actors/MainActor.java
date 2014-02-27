@@ -35,8 +35,8 @@ public class MainActor extends UntypedActor {
     @Override
     public void onReceive(final Object message) throws Exception {
         final RequestMessage req = (RequestMessage) message;
-        req.getOut().write(soy.html(req.getRequest(), req.getResponse(), "pods.head.index", headerPagelet.invoke()));
-        req.getOut().write(soy.html(req.getRequest(), req.getResponse(), "pods.header.index"));
+        req.getOut().write(soy.html(req.getRequest(), req.getResponse(), "pods.head.index", headerPagelet.invoke())); //sync no remote calls
+        req.getOut().write(soy.html(req.getRequest(), req.getResponse(), "pods.header.index"));  //sync no remote calls
 
         wordsPagelet.invoke().recover(new F.Function<Throwable, WordsModel>() {
             @Override
@@ -48,7 +48,7 @@ public class MainActor extends UntypedActor {
             @Override
             public void invoke(final WordsModel wordsModel) throws Throwable {
                 req.getOut().write(soy.html(req.getRequest(), req.getResponse(), "pods.main.index", wordsModel));
-                req.getOut().write(soy.html(req.getRequest(), req.getResponse(), "pods.footer.index"));
+                req.getOut().write(soy.html(req.getRequest(), req.getResponse(), "pods.footer.index"));  //sync no remote calls
                 req.getOut().close();
             }
         });
