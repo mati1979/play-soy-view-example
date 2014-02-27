@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class WordsPagelet {
 
-    public WordsModel invoke() {
+    public WordsModel invoke() throws InterruptedException {
+        Thread.sleep(2000);
         return new WordsModel(Lists.newArrayList("test", "test2"));
     }
 

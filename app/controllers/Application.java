@@ -47,7 +47,7 @@ public class Application extends Controller {
             @Override
             public void onReady(final Out<String> out) {
                 final ActorRef actorRef = Akka.system().actorOf(Props.create(MainActor.class, headerPagelet, wordsPagelet, out, soy));
-                Patterns.ask(actorRef, new RequestMessage(request, response), 10000);
+                actorRef.tell(new RequestMessage(request, response), null);
             }
         };
 

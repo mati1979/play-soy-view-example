@@ -30,13 +30,9 @@ public class MainActor extends UntypedActor {
     public void onReceive(final Object message) throws Exception {
         RequestMessage req = (RequestMessage) message;
         out.write(soy.html(req.getRequest(), req.getResponse(), "pods.head.index", headerPagelet.invoke()));
-        Thread.sleep(2000);
         out.write(soy.html(req.getRequest(), req.getResponse(), "pods.header.index"));
-        Thread.sleep(2000);
         out.write(soy.html(req.getRequest(), req.getResponse(), "pods.main.index", wordsPagelet.invoke()));
-        Thread.sleep(2000);
         out.write(soy.html(req.getRequest(), req.getResponse(), "pods.footer.index"));
-        Thread.sleep(2000);
         out.close();
     }
 

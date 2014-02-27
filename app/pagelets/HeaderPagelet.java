@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class HeaderPagelet {
 
-    public HeaderModel invoke() {
+    public HeaderModel invoke() throws InterruptedException {
         final HeaderModel headerModel = new HeaderModel();
         headerModel.setSoyUtilsLink("/assets/bower_components/soyutils/soyutils.js");
         headerModel.setjQueryLink("/assets/bower_components/jquery/jquery.js");
         headerModel.setTitle("Test Title");
+
+        Thread.sleep(2000);
 
         return headerModel;
     }
