@@ -1,0 +1,21 @@
+{namespace pods.head}
+
+/**
+ * @param soyUtilsLink
+ * @param jQueryLink
+ * @param title
+ */
+{template .index}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>{$title}</title>
+        <script type="text/javascript" src="{$soyUtilsLink}"></script>
+        <script type="text/javascript" src="{$jQueryLink}"></script>
+        <script type="text/javascript" src="/soy?file=template2.soy{if $ij.soyplugin.ajax.soy.hash}&amp;hash={$ij.soyplugin.ajax.soy.hash}{/if}"></script>
+        <script type="text/javascript" src="/assets/javascripts/index.js"></script>
+    </head>
+
+{/template}

@@ -1,0 +1,12 @@
+{namespace pods.main}
+
+/**
+ * @param words
+ */
+{template .index}
+            <ul>
+                    {foreach $word in $words}
+                            <li>{$word}</li>
+                    {/foreach}
+            </ul>
+{/template}

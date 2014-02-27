@@ -1,11 +1,17 @@
 package controllers;
 
+import actors.MainActor;
+import actors.RequestMessage;
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.pattern.Patterns;
 import com.github.mati1979.play.soyplugin.plugin.Soy;
 import model.IndexPageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pagelets.HeaderPagelet;
 import pagelets.WordsPagelet;
+import play.libs.Akka;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -22,15 +28,17 @@ public class Application extends Controller {
     @Autowired
     private WordsPagelet wordsPagelet;
 
-    public Result index() throws Exception {
+    public Result normalRender() throws Exception {
         final IndexPageModel indexPageModel = new IndexPageModel();
         indexPageModel.setHeaderModel(headerPagelet.invoke());
         indexPageModel.setWordsModel(wordsPagelet.invoke());
+
+        Thread.sleep(4000);
 
         return ok(soy.html("pages.index", indexPageModel));
     }
 
-    public Result index2() throws Exception {
+    public Result progressiveRender() throws Exception {
         final Http.Request request = request();
         final Http.Response response = response();
 
@@ -38,78 +46,12 @@ public class Application extends Controller {
 
             @Override
             public void onReady(final Out<String> out) {
-                try {
-                    for (int i = 0; i<100; i++) {
-                        final String str = soy.html(request, response, "soy.example.index2");
-                        out.write(str);
-                    }
-                    out.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                final ActorRef actorRef = Akka.system().actorOf(Props.create(MainActor.class, headerPagelet, wordsPagelet, out, soy));
+                Patterns.ask(actorRef, new RequestMessage(request, response), 10000);
             }
         };
 
         return ok(chunks).as("text/html");
-    }
-
-    public Result index3() throws Exception {
-        final IndexPageModel indexPageModel = new IndexPageModel();
-        indexPageModel.setHeaderModel(headerPagelet.invoke());
-        indexPageModel.setWordsModel(wordsPagelet.invoke());
-
-        final Http.Request request = request();
-        final Http.Response response = response();
-
-        final Chunks<String> chunks = new StringChunks() {
-
-            @Override
-            public void onReady(final Out<String> out) {
-                try {
-                    for (int i = 0; i<100; i++) {
-                        final String str = soy.html(request, response, "pages.index", indexPageModel);
-                        out.write(str);
-                    }
-                    out.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        return ok(chunks).as("text/html");
-    }
-
-//    public class ResultStreamer {
-//        public void stream(Chunks.Out<String> out) {
-//            for (int i = 0; i < 10000; i++) {
-//            }
-//            out.close();
-//        }
-//    }
-
-    public static class BuffOut {
-        private StringBuilder sb;
-        private Chunks.Out<String> dst;
-
-        public BuffOut(Chunks.Out<String> dst, int bufSize) {
-            this.dst = dst;
-            this.sb = new StringBuilder(bufSize);
-        }
-
-        public void write(String data) {
-            if ((sb.length() + data.length()) > sb.capacity()) {
-                dst.write(sb.toString());
-                sb.setLength(0);
-            }
-            sb.append(data);
-        }
-
-        public void close() {
-            if (sb.length() > 0)
-                dst.write(sb.toString());
-            dst.close();
-        }
     }
 
 }

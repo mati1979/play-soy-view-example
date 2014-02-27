@@ -3,9 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /                           @controllers.Application.index()
-GET     /index2                     @controllers.Application.index2()
-GET     /index3                     @controllers.Application.index3()
+GET     /                           @controllers.Application.normalRender()
+GET     /progressive                @controllers.Application.progressiveRender()
 
 GET     /soy                        @com.github.mati1979.play.soyplugin.ajax.SoyAjaxController.compile(hash: String ?= "", file: java.util.List[String], locale: String ?= "", disableProcessors: Boolean ?= false)
 
