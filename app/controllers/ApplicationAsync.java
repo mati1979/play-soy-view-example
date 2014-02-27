@@ -10,7 +10,6 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Results;
-import scala.io.Codec;
 
 /**
  * Created by mszczap on 27.02.14.

@@ -26,7 +26,7 @@ public class Global extends GlobalSettings {
 
         this.ctx.refresh();
 
-        ActorSystem system = ctx.getBean(ActorSystem.class);
+        final ActorSystem system = ctx.getBean(ActorSystem.class);
         SpringExtension.SpringExtProvider.get(system).initialize(ctx);
     }
 
