@@ -1,7 +1,10 @@
 package actors;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 import akka.actor.UntypedActor;
 import com.github.mati1979.play.soyplugin.plugin.Soy;
+import helper.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import pagelets.HeaderPagelet;
@@ -36,6 +39,11 @@ public class MainActor extends UntypedActor {
         req.getOut().write(soy.html(req.getRequest(), req.getResponse(), "pods.footer.index"));
         req.getOut().close();
     }
+
+    public static ActorRef create(final ActorSystem system) {
+        return system.actorOf(SpringExtension.SpringExtProvider.get(system).props("MainActor"), "mainActor" + System.currentTimeMillis());
+    }
+
 
     public static class RequestMessage {
 

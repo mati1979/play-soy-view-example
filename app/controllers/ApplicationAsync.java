@@ -31,14 +31,11 @@ public class ApplicationAsync extends Controller {
 
             @Override
             public void onReady(final Out<String> out) {
-                createMainActor().tell(new MainActor.RequestMessage(request, response, out), null);
+                final ActorRef actorRef = MainActor.create(system);
+                actorRef.tell(new MainActor.RequestMessage(request, response, out), null);
             }
 
         };
-    }
-
-    private ActorRef createMainActor() {
-        return system.actorOf(SpringExtension.SpringExtProvider.get(system).props("MainActor"), "mainActor" + System.currentTimeMillis());
     }
 
 }
