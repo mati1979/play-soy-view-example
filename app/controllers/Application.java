@@ -1,16 +1,19 @@
 package controllers;
 
-import com.github.mati1979.play.soyplugin.config.PlayConfAccessor;
 import com.github.mati1979.play.soyplugin.plugin.Soy;
 import model.IndexPageModel;
+import pagelets.HeaderModel;
+import pagelets.WordsModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pagelets.HeaderPagelet;
 import pagelets.WordsPagelet;
 import play.api.templates.Html;
+import play.libs.F;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-@org.springframework.stereotype.Controller
+@Component
 public class Application extends Controller {
 
     @Autowired
@@ -22,16 +25,12 @@ public class Application extends Controller {
     @Autowired
     private WordsPagelet wordsPagelet;
 
-    public Result index() throws Exception {
-        final IndexPageModel indexPageModel = new IndexPageModel();
-        indexPageModel.setHeaderModel(headerPagelet.invoke());
-        indexPageModel.setWordsModel(wordsPagelet.invoke().get(10000));
+    public F.Promise<Result> index() throws Exception {
+        final F.Promise<HeaderModel> headerModelP = headerPagelet.invoke();
+        final F.Promise<WordsModel> wordsModelP = wordsPagelet.invoke();
 
-        Thread.sleep(4000);
-
-        response().setContentType(Html.empty().contentType());
-
-        return ok(soy.html("pages.index", indexPageModel), PlayConfAccessor.GLOBAL_ENCODING);
+        return headerModelP.flatMap(headerModel -> wordsModelP
+                .map(wordsModel -> ok(Html.apply(soy.html("pages.index", new IndexPageModel(headerModel, wordsModel))))));
     }
 
 }

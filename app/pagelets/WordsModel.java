@@ -1,4 +1,4 @@
-package model.pagelets;
+package pagelets;
 
 import java.util.ArrayList;
 import java.util.List;

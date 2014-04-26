@@ -1,4 +1,4 @@
-package model.pagelets;
+package pagelets;
 
 /**
  * Created by mati on 03/02/2014.

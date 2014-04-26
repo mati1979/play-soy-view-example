@@ -3,8 +3,7 @@ package soy;
 import com.github.mati1979.play.soyplugin.ajax.config.PlaySoyViewAjaxConfig;
 import com.github.mati1979.play.soyplugin.ajax.hash.HashFileGenerator;
 import com.github.mati1979.play.soyplugin.ajax.runtime.SoyHashesRuntimeDataResolver;
-import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
-import com.github.mati1979.play.soyplugin.config.ConfigKeys;
+import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.compile.DefaultCompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.runtime.DefaultGlobalRuntimeModelResolver;
@@ -12,10 +11,11 @@ import com.github.mati1979.play.soyplugin.global.runtime.GlobalRuntimeModelResol
 import com.github.mati1979.play.soyplugin.global.runtime.RuntimeDataResolver;
 import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.locale.PlayLocaleProvider;
-import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
 import com.google.common.collect.Lists;
-import org.springframework.context.annotation.*;
-import play.Play;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,19 +31,19 @@ public class PlaySoyConfigExt {
 
     @Bean
     @Primary
-    public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver() throws Exception {
+    public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver(final SoyViewConf soyViewConf) throws Exception {
         final Map<String,Object> configData = new HashMap<>();
-        configData.put("soyplugin.global.hot.reload.mode", Play.application().configuration().getBoolean(ConfigKeys.GLOBAL_HOT_RELOAD_MODE, ConfigDefaults.GLOBAL_HOT_RELOAD_MODE));
-        configData.put("soyplugin.precompile.templates", Play.application().configuration().getBoolean(ConfigKeys.COMPILE_PRECOMPILE_TEMPLATES, ConfigDefaults.COMPILE_PRECOMPILE_TEMPLATES));
+        configData.put("soyplugin.global.hot.reload.mode", soyViewConf.globalHotReloadMode());
+        configData.put("soyplugin.precompile.templates", soyViewConf.compilePrecompileTemplates());
 
         return new DefaultCompileTimeGlobalModelResolver(configData);
     }
 
     @Bean
     @Primary
-    public GlobalRuntimeModelResolver soyRuntimeDataProvider(final HashFileGenerator hashFileGenerator, final TemplateFilesResolver templateFilesResolver) throws Exception {
+    public GlobalRuntimeModelResolver soyRuntimeDataProvider(final HashFileGenerator hashFileGenerator) throws Exception {
         final List<RuntimeDataResolver> systemRuntimeResolvers = Lists.newArrayList();
-        systemRuntimeResolvers.add(new SoyHashesRuntimeDataResolver(hashFileGenerator, templateFilesResolver));
+        systemRuntimeResolvers.add(new SoyHashesRuntimeDataResolver(hashFileGenerator));
 
         final List<RuntimeDataResolver> userRuntimeResolvers = new ArrayList<>();
         userRuntimeResolvers.add(new LoggedInRuntimeResolver());
