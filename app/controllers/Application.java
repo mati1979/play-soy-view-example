@@ -25,7 +25,7 @@ public class Application extends Controller {
     @Autowired
     private WordsPagelet wordsPagelet;
 
-    public F.Promise<Result> index() throws Exception {
+    public F.Promise<Result> index() {
         final F.Promise<HeaderModel> headerModelP = headerPagelet.invoke();
         final F.Promise<WordsModel> wordsModelP = wordsPagelet.invoke();
 

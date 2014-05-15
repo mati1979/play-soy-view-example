@@ -10,7 +10,7 @@ import play.libs.F;
 @Service
 public class HeaderPagelet {
 
-    public F.Promise<HeaderModel> invoke() throws InterruptedException {
+    public F.Promise<HeaderModel> invoke() {
         final HeaderModel headerModel = new HeaderModel();
         headerModel.setSoyUtilsLink("/assets/bower_components/soyutils/soyutils.js");
         headerModel.setjQueryLink("/assets/bower_components/jquery/jquery.js");

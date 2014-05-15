@@ -3,6 +3,7 @@ package soy;
 import com.github.mati1979.play.soyplugin.ajax.config.PlaySoyViewAjaxConfig;
 import com.github.mati1979.play.soyplugin.ajax.hash.HashFileGenerator;
 import com.github.mati1979.play.soyplugin.ajax.runtime.SoyHashesRuntimeDataResolver;
+import com.github.mati1979.play.soyplugin.config.DefaultSoyViewConf;
 import com.github.mati1979.play.soyplugin.config.SoyViewConf;
 import com.github.mati1979.play.soyplugin.global.compile.CompileTimeGlobalModelResolver;
 import com.github.mati1979.play.soyplugin.global.compile.DefaultCompileTimeGlobalModelResolver;
@@ -31,7 +32,7 @@ public class PlaySoyConfigExt {
 
     @Bean
     @Primary
-    public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver(final SoyViewConf soyViewConf) throws Exception {
+    public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver(final SoyViewConf soyViewConf)  {
         final Map<String,Object> configData = new HashMap<>();
         configData.put("soyplugin.global.hot.reload.mode", soyViewConf.globalHotReloadMode());
         configData.put("soyplugin.precompile.templates", soyViewConf.compilePrecompileTemplates());
@@ -41,7 +42,7 @@ public class PlaySoyConfigExt {
 
     @Bean
     @Primary
-    public GlobalRuntimeModelResolver soyRuntimeDataProvider(final HashFileGenerator hashFileGenerator) throws Exception {
+    public GlobalRuntimeModelResolver soyRuntimeDataProvider(final HashFileGenerator hashFileGenerator) {
         final List<RuntimeDataResolver> systemRuntimeResolvers = Lists.newArrayList();
         systemRuntimeResolvers.add(new SoyHashesRuntimeDataResolver(hashFileGenerator));
 
@@ -49,6 +50,15 @@ public class PlaySoyConfigExt {
         userRuntimeResolvers.add(new LoggedInRuntimeResolver());
 
         return new DefaultGlobalRuntimeModelResolver(systemRuntimeResolvers, userRuntimeResolvers);
+    }
+
+    @Bean
+    @Primary
+    public SoyViewConf soyViewConf() {
+        return DefaultSoyViewConf.Builder.newBuilder()
+                .withAjaxAllowedUrls("template2.soy")
+                .withAjaxSecurityEnabled(true)
+                .build();
     }
 
     @Bean
