@@ -10,8 +10,10 @@ import java.util.Optional;
  */
 public abstract class WSCommand<T> extends HysterixCommand<T> {
 
-    protected WSCommand(HystrixRequestCache hystrixRequestCache) {
-        super(hystrixRequestCache);
+    protected WSCommand(final HystrixRequestCache hystrixRequestCache,
+                        final HysterixRequestLog hysterixRequestLog,
+                        final HysterixSettings hysterixSettings) {
+        super(hystrixRequestCache, hysterixRequestLog, hysterixSettings);
     }
 
     @Override

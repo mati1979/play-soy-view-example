@@ -23,16 +23,20 @@ public abstract class HysterixCommand<T> {
 
     private AtomicReference<Stopwatch> stopwatch = new AtomicReference(Stopwatch.createUnstarted());
 
-    protected HysterixSettings hysterixSettings = new HysterixSettings();
+    protected final HysterixSettings hysterixSettings;
+    protected final HysterixRequestLog hysterixRequestLog;
+    protected final HystrixRequestCache hystrixRequestCache;
 
     //transform response into domain object, client is responsible to call web service
     //this method is used only if needed, execute will work out if the response can come from a cache
     protected abstract F.Promise<T> run();
 
-    private HystrixRequestCache hystrixRequestCache;
-
-    protected HysterixCommand(final HystrixRequestCache hystrixRequestCache) {
+    protected HysterixCommand(final HystrixRequestCache hystrixRequestCache,
+                              final HysterixRequestLog hysterixRequestLog,
+                              final HysterixSettings hysterixSettings) {
         this.hystrixRequestCache = hystrixRequestCache;
+        this.hysterixSettings = hysterixSettings;
+        this.hysterixRequestLog = hysterixRequestLog;
     }
 
     public abstract String getCommandKey();
@@ -54,17 +58,26 @@ public abstract class HysterixCommand<T> {
 
     //checks cache or does invoke run method
     private F.Promise<T> work() {
-        return getFromCache().orElse(run());
+        Optional<F.Promise<T>> fromCache = getFromCache();
+        if (fromCache.isPresent()) {
+            return fromCache.get();
+        }
+
+        return run();
     }
 
     private T onSuccess(final T response) {
         stopwatch.get().stop();
         executionEvents.add(HysterixEventType.SUCCESS);
-        isExecutionComplete.set(true);
-
         putToCache(response);
+        executionComplete();
 
         return response;
+    }
+
+    private void executionComplete() {
+        isExecutionComplete.set(true);
+        hysterixRequestLog.addExecutedCommand(this);
     }
 
     private Optional<F.Promise<T>> getFromCache() {
@@ -93,7 +106,7 @@ public abstract class HysterixCommand<T> {
         stopwatch.get().stop();
         System.out.println("onFailure:" + t);
         executionEvents.add(HysterixEventType.FAILURE);
-        isExecutionComplete.set(true);
+        executionComplete();
         return t;
     }
 
@@ -110,8 +123,8 @@ public abstract class HysterixCommand<T> {
     }
 
     private T onRecoverSuccess(final T t) {
-        isExecutionComplete.set(true);
         executionEvents.add(HysterixEventType.FALLBACK_SUCCESS);
+        executionComplete();
         return t;
     }
 

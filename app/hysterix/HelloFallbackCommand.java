@@ -13,8 +13,8 @@ public class HelloFallbackCommand extends WSCommand<String> {
 
     private WSRequestHolder wsRequestHolder = WS.url("http://localhost:9000/mock").setTimeout(10000);
 
-    public HelloFallbackCommand(final HystrixRequestCache httpRequestsCache) {
-        super(httpRequestsCache);
+    public HelloFallbackCommand(final HystrixRequestCache httpRequestsCache, final HysterixRequestLog requestLog, final HysterixSettings settings) {
+        super(httpRequestsCache, requestLog, settings);
     }
 
     @Override
