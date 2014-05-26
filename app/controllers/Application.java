@@ -2,16 +2,16 @@ package controllers;
 
 import com.github.mati1979.play.soyplugin.plugin.Soy;
 import model.IndexPageModel;
-import pagelets.HeaderModel;
-import pagelets.WordsModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pagelets.HeaderModel;
 import pagelets.HeaderPagelet;
+import pagelets.WordsModel;
 import pagelets.WordsPagelet;
-import play.api.templates.Html;
 import play.libs.F;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.twirl.api.Html;
 
 @Component
 public class Application extends Controller {

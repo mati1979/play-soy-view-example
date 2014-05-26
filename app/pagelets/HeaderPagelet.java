@@ -1,6 +1,5 @@
 package pagelets;
 
-import pagelets.HeaderModel;
 import org.springframework.stereotype.Service;
 import play.libs.F;
 

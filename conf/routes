@@ -4,6 +4,11 @@
 
 # Home page
 GET     /                           @controllers.Application.index()
+GET     /helloFallback              @controllers.HystrixController.helloWithFallback()
+GET     /helloWithoutFallback       @controllers.HystrixController.helloWithoutFallback()
+GET     /clearCache                 @controllers.HystrixController.clearCache()
+GET     /requestCache               @controllers.RequestCacheController.index()
+GET     /mock                       @controllers.RemoteCallMockController.index()
 
 GET     /soy                        @com.github.mati1979.play.soyplugin.ajax.SoyAjaxController.compile(hash: String ?= "", file: java.util.List[String], locale: String ?= "", disableProcessors: Boolean ?= false)
 
