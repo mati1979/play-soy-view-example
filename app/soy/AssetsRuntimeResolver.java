@@ -48,12 +48,9 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
                             if (matcher.find()) {
                                 final String asset = matcher.group(1).replace(".md5]", "");
                                 final String key = "assets." + asset.replace("/", ".");
-                                try {
-                                    String versioned = MyAssets.versioned(asset);
-                                    Logger.info(String.format("key:%s - value:%s", key, versioned));
-                                    cache.put(key, versioned);
-                                } catch (Exception e) { //swallow
-                                }
+                                String versioned = MyAssets.versioned(asset);
+                                Logger.info(String.format("key:%s - value:%s", key, versioned));
+                                cache.put(key, versioned);
                             }
                         });
             } catch (IOException e) {
@@ -84,7 +81,12 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
             });
         }
         if (Play.isProd()) {
-            cache.entrySet().stream().forEach(entry -> root.put(entry.getKey(), entry.getValue()));
+            cache.entrySet().stream().forEach(entry -> {
+                try {
+                    root.put(entry.getKey(), entry.getValue());
+                } catch (Exception e) { //swallow
+                }
+            });
         }
         Logger.debug("static assets generation took:" + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
     }
