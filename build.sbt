@@ -6,12 +6,14 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
 scalaVersion := "2.10.4"
 
+val springVersion = settingKey[String]("4.0.5.RELEASE")
+
+springVersion := "4.0.5.RELEASE"
+
 libraryDependencies ++= Seq(
-  "pl.matisoft" %% "play-soy-view" % "0.1.12",
-  "org.springframework" % "spring-core" % "4.0.3.RELEASE",
-  "org.springframework" % "spring-beans" % "4.0.3.RELEASE",
-  "org.springframework" % "spring-context" % "4.0.3.RELEASE",
-  "org.springframework" % "spring-expression" % "4.0.3.RELEASE",
-  "com.threerings" % "react" % "1.4.1",
-  javaWs
+  "pl.matisoft" %% "play-soy-view" % "0.1.13.play23",
+  "org.springframework" % "spring-core" % springVersion.value,
+  "org.springframework" % "spring-beans" % springVersion.value,
+  "org.springframework" % "spring-context" % springVersion.value,
+  "org.springframework" % "spring-expression" % springVersion.value
 )
