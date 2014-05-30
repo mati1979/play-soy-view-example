@@ -13,6 +13,7 @@ import com.github.mati1979.play.soyplugin.global.runtime.RuntimeDataResolver;
 import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
 import com.github.mati1979.play.soyplugin.locale.PlayLocaleProvider;
 import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -42,14 +43,23 @@ public class PlaySoyConfigExt {
 
     @Bean
     @Primary
-    public GlobalRuntimeModelResolver soyRuntimeDataProvider(final HashFileGenerator hashFileGenerator) {
+    public GlobalRuntimeModelResolver soyRuntimeDataProvider(
+            final HashFileGenerator hashFileGenerator,
+            @Qualifier("assetsRuntimeDataResolver") final AssetsRuntimeResolver assetsRuntimeResolver) {
         final List<RuntimeDataResolver> systemRuntimeResolvers = Lists.newArrayList();
         systemRuntimeResolvers.add(new SoyHashesRuntimeDataResolver(hashFileGenerator));
 
         final List<RuntimeDataResolver> userRuntimeResolvers = new ArrayList<>();
         userRuntimeResolvers.add(new LoggedInRuntimeResolver());
+        userRuntimeResolvers.add(assetsRuntimeResolver);
 
         return new DefaultGlobalRuntimeModelResolver(systemRuntimeResolvers, userRuntimeResolvers);
+    }
+
+    @Bean
+    @Qualifier("assetsRuntimeDataResolver")
+    public AssetsRuntimeResolver assetsRuntimeDataProvider() {
+        return new AssetsRuntimeResolver();
     }
 
     @Bean

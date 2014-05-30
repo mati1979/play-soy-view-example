@@ -2,7 +2,7 @@ name := "play-soy-view-example"
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayJava)
+lazy val root = (project in file(".")).enablePlugins(PlayJava, SbtWeb)
 
 scalaVersion := "2.10.4"
 
@@ -17,3 +17,5 @@ libraryDependencies ++= Seq(
   "org.springframework" % "spring-context" % springVersion.value,
   "org.springframework" % "spring-expression" % springVersion.value
 )
+
+pipelineStages := Seq(digest)

@@ -10,10 +10,10 @@
 <html>
     <head>
         <title>{$headerModel.title}</title>
-        <script type="text/javascript" src="{$headerModel.soyUtilsLink}"></script>
-        <sc ript type="text/javascript" src="{$headerModel.jQueryLink}"></script>
+        <script type="text/javascript" src="{$ij.assets.bower_components.soyutils.soyutils.js}"></script>
+        <script type="text/javascript" src="{$ij.assets.bower_components.jquery.src.jquery.js}"></script>
         <script type="text/javascript" src="/soy?file=template2.soy{if $ij.soyplugin.ajax.soy.hash}&amp;hash={$ij.soyplugin.ajax.soy.hash}{/if}"></script>
-        <script type="text/javascript" src="/assets/javascripts/index.js"></script>
+        <script type="text/javascript" src="{$ij.assets.javascripts.index.js}"></script>
     </head>
     <body>
         Global model vars:<br>
