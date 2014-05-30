@@ -49,7 +49,9 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
                                 final String asset = matcher.group(1).replace(".md5]", "");
                                 final String key = "assets." + asset.replace("/", ".");
                                 try {
-                                    cache.put(key, MyAssets.versioned(asset));
+                                    String versioned = MyAssets.versioned(asset);
+                                    Logger.info(String.format("key:%s - value:%s", key, versioned));
+                                    cache.put(key, versioned);
                                 } catch (Exception e) { //swallow
                                 }
                             }
@@ -64,22 +66,27 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
 
     @Override
     public void resolveData(Http.Request request, Http.Response response, Map<String, ? extends Object> model, SoyMapData root) {
-        if (Play.isDev() && Play.isTest()) {
+        final Stopwatch stopwatch = Stopwatch.createStarted();
+        if (Play.isDev() || Play.isTest()) {
             final File dir = Play.application().getFile("/public/");
             FileUtils.listFiles(dir, null, true).forEach(f -> {
                 final Matcher matcher = FILE_PATTERN.matcher(f.getPath());
                 if (matcher.find()) {
                     final String asset = matcher.group(1);
                     final String key = "assets." + asset.replace("/", ".");
+                    String versioned = MyAssets.versioned(asset);
+                    //Logger.info(String.format("key:%s - value:%s", key, versioned));
                     try {
-                        root.put(key, MyAssets.versioned(asset));
-                    } catch (Exception e) {} //swallow
+                        root.put(key, versioned);
+                    } catch (Exception e) {
+                    } //swallow
                 }
             });
         }
         if (Play.isProd()) {
             cache.entrySet().stream().forEach(entry -> root.put(entry.getKey(), entry.getValue()));
         }
+        Logger.debug("static assets generation took:" + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
     }
 
 }
