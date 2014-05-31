@@ -72,7 +72,7 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
                     final String asset = matcher.group(1);
                     final String key = "assets." + asset.replace("/", ".");
                     String versioned = MyAssets.versioned(asset);
-                    //Logger.info(String.format("key:%s - value:%s", key, versioned));
+                    Logger.info(String.format("key:%s - value:%s", key, versioned));
                     try {
                         root.put(key, versioned);
                     } catch (Exception e) {

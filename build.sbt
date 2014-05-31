@@ -18,4 +18,4 @@ libraryDependencies ++= Seq(
   "org.springframework" % "spring-expression" % springVersion.value
 )
 
-pipelineStages := Seq(rjs, digest, gzip)
+pipelineStages := Seq(digest, gzip)
