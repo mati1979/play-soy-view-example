@@ -10,7 +10,7 @@ import soy.PlaySoyConfigExt;
  */
 @Configuration
 @Import(PlaySoyConfigExt.class)
-@ComponentScan({"controllers", "pagelets", "actors"})
+@ComponentScan({"controllers", "pagelets"})
 public class PlaySoyViewExampleConfig {
 
 }
