@@ -11,7 +11,7 @@ val springVersion = settingKey[String]("4.0.5.RELEASE")
 springVersion := "4.0.5.RELEASE"
 
 libraryDependencies ++= Seq(
-  "pl.matisoft" %% "play-soy-view" % "0.1.14-SNAPSHOT",
+  "pl.matisoft" %% "play-soy-view" % "0.1.15",
   "org.springframework" % "spring-core" % springVersion.value,
   "org.springframework" % "spring-beans" % springVersion.value,
   "org.springframework" % "spring-context" % springVersion.value,
