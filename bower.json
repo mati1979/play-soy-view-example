@@ -15,7 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "*",
-    "soyutils": "*"
+    "jquery": "2.1.1",
+    "soyutils": "2014.04.22"
   }
 }

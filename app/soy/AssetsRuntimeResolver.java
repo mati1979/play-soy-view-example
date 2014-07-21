@@ -36,7 +36,7 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
     @PostConstruct
     public void init() {
         if (Play.isProd()) {
-            Logger.info("creating static assets (md5)...");
+            Logger.debug("creating static assets (md5)...");
             final Stopwatch stopwatch = Stopwatch.createStarted();
             try {
                 final Resource[] resources = pathMatchingResourcePatternResolver.getResources("classpath*:public/**/*.md5");
@@ -57,7 +57,7 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
                 throw new RuntimeException("failed to inject static md5 data", e);
             }
             stopwatch.stop();
-            Logger.info("static assets generation took:" + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
+            //Logger.debug("static assets generation took:" + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
         }
     }
 
@@ -72,7 +72,7 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
                     final String asset = matcher.group(1);
                     final String key = "assets." + asset.replace("/", ".");
                     String versioned = MyAssets.versioned(asset);
-                    Logger.info(String.format("key:%s - value:%s", key, versioned));
+                    Logger.debug(String.format("key:%s - value:%s", key, versioned));
                     try {
                         root.put(key, versioned);
                     } catch (Exception e) {
@@ -80,6 +80,7 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
                 }
             });
         }
+
         if (Play.isProd()) {
             cache.entrySet().stream().forEach(entry -> {
                 try {
@@ -88,7 +89,7 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
                 }
             });
         }
-        Logger.debug("static assets generation took:" + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
+        //Logger.debug("static assets generation took:" + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
     }
 
 }
