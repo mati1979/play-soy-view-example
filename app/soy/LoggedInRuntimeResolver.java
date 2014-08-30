@@ -12,7 +12,7 @@ import java.util.Map;
 public class LoggedInRuntimeResolver implements RuntimeDataResolver {
 
     @Override
-    public void resolveData(Http.Request request, Http.Response response, Map<String, ? extends Object> model, SoyMapData root) {
+    public void resolveData(final Http.Request request, final Http.Response response, Map<String, ? extends Object> model, SoyMapData root) {
         root.put("loggedIn", true);
         root.put("email", "mati@sz.home.pl");
     }
