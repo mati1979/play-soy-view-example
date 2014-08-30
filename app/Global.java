@@ -7,10 +7,10 @@ import play.GlobalSettings;
 public class Global extends GlobalSettings {
 
     @Override
-    public void onStart(Application application) {
+    public void onStart(final Application application) {
         //PlaySoyViewModule playSoyViewModule = new PlaySoyViewModule();
         //Modules.combine(playSoyViewModule);
-        //Modules.override().with()
+        //Modules.combine(new PlaySoyViewModule())
     }
 
 }
