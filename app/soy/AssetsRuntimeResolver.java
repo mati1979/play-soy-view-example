@@ -9,10 +9,11 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import play.Environment;
 import play.Logger;
-import play.Play;
 import play.mvc.Http;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -31,12 +32,16 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
 
     private final static Map<String, String> cache = Maps.newConcurrentMap();
 
-    public AssetsRuntimeResolver() {
+    private Environment environment;
+
+    @Inject
+    public AssetsRuntimeResolver(final Environment environment) {
+        this.environment = environment;
         init();
     }
 
     public void init() {
-        if (Play.isProd()) {
+        if (environment.isProd()) {
             Logger.debug("creating static assets (md5)...");
             final Stopwatch stopwatch = Stopwatch.createStarted();
             try {
@@ -65,8 +70,8 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
     @Override
     public void resolveData(Http.Request request, Http.Response response, Map<String, ? extends Object> model, SoyMapData root) {
         final Stopwatch stopwatch = Stopwatch.createStarted();
-        if (Play.isDev() || Play.isTest()) {
-            final File dir = Play.application().getFile("/public/");
+        if (environment.isDev() || environment.isTest()) {
+            final File dir = environment.getFile("/public/");
             FileUtils.listFiles(dir, null, true).forEach(f -> {
                 final Matcher matcher = FILE_PATTERN.matcher(f.getPath());
                 if (matcher.find()) {
@@ -82,7 +87,7 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
             });
         }
 
-        if (Play.isProd()) {
+        if (environment.isProd()) {
             cache.entrySet().stream().forEach(entry -> {
                 try {
                     root.put(entry.getKey(), entry.getValue());

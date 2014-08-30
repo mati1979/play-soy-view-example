@@ -52,55 +52,8 @@ import java.util.Map;
  */
 public class PlaySoyConfigExt extends AbstractModule {
 
-//    @Bean
-//    @Primary
-//    public CompileTimeGlobalModelResolver soyCompileTimeGlobalModelResolver(final SoyViewConf soyViewConf)  {
-//        final Map<String,Object> configData = new HashMap<>();
-//        configData.put("soyplugin.global.hot.reload.mode", soyViewConf.globalHotReloadMode());
-//        configData.put("soyplugin.precompile.templates", soyViewConf.compilePrecompileTemplates());
-//
-//        return new DefaultCompileTimeGlobalModelResolver(configData);
-//    }
-//
-//    @Bean
-//    @Primary
-//    public GlobalRuntimeModelResolver soyRuntimeDataProvider(
-//            final HashFileGenerator hashFileGenerator,
-//            @Qualifier("assetsRuntimeDataResolver") final AssetsRuntimeResolver assetsRuntimeResolver) {
-//        final List<RuntimeDataResolver> systemRuntimeResolvers = Lists.newArrayList();
-//        systemRuntimeResolvers.add(new SoyHashesRuntimeDataResolver(hashFileGenerator));
-//
-//        final List<RuntimeDataResolver> userRuntimeResolvers = new ArrayList<>();
-//        userRuntimeResolvers.add(new LoggedInRuntimeResolver());
-//        userRuntimeResolvers.add(assetsRuntimeResolver);
-//
-//        return new DefaultGlobalRuntimeModelResolver(systemRuntimeResolvers, userRuntimeResolvers);
-//    }
-//
-//    @Bean
-//    @Qualifier("assetsRuntimeDataResolver")
-//    public AssetsRuntimeResolver assetsRuntimeDataProvider() {
-//        return new AssetsRuntimeResolver();
-//    }
-//
-//    @Bean
-//    @Primary
-//    public SoyViewConf soyViewConf() {
-//        return DefaultSoyViewConf.Builder.newBuilder()
-//                .withAjaxAllowedUrls("template2.soy")
-//                .withAjaxSecurityEnabled(true)
-//                .build();
-//    }
-//
-//    @Bean
-//    @Primary
-//    public LocaleProvider soyLocaleProvider() throws Exception {
-//        return new PlayLocaleProvider();
-//    }
-
     @Override
     protected void configure() {
-        //bind(GlobalRuntimeModelResolver.class).to(EmptyGlobalRuntimeModelResolver.class).in(Singleton.class);
         bind(TemplateFilesResolver.class).to(FileSystemTemplateFilesResolver.class).in(Singleton.class);
         bind(ToSoyDataConverter.class).to(ReflectionToSoyDataConverter.class).in(Singleton.class);
         bind(SoyJsSrcOptions.class).toInstance(new SoyJsSrcOptions());
