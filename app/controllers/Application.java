@@ -2,8 +2,6 @@ package controllers;
 
 import com.github.mati1979.play.soyplugin.plugin.Soy;
 import model.IndexPageModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import pagelets.HeaderModel;
 import pagelets.HeaderPagelet;
 import pagelets.WordsModel;
@@ -12,25 +10,29 @@ import play.libs.F;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.twirl.api.Html;
+import utils.Promises;
 
-@Component
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class Application extends Controller {
 
-    @Autowired
+    @Inject
     private Soy soy;
 
-    @Autowired
+    @Inject
     private HeaderPagelet headerPagelet;
 
-    @Autowired
+    @Inject
     private WordsPagelet wordsPagelet;
 
     public F.Promise<Result> index() {
         final F.Promise<HeaderModel> headerModelP = headerPagelet.invoke();
         final F.Promise<WordsModel> wordsModelP = wordsPagelet.invoke();
 
-        return headerModelP.flatMap(headerModel -> wordsModelP
-                .map(wordsModel -> ok(Html.apply(soy.html("pages.index", new IndexPageModel(headerModel, wordsModel))))));
+        return Promises.zip(headerModelP, wordsModelP, (header, words)
+                -> ok(Html.apply(soy.html("pages.index", new IndexPageModel(header, words)))));
     }
 
 }
