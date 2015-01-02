@@ -1,6 +1,6 @@
 package controllers;
 
-import com.github.mati1979.play.soyplugin.plugin.Soy;
+import com.github.mati1979.play.soyplugin.soy.Soy;
 import model.IndexPageModel;
 import pagelets.HeaderModel;
 import pagelets.HeaderPagelet;

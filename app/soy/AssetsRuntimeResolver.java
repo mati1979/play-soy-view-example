@@ -4,7 +4,7 @@ import com.github.mati1979.play.soyplugin.global.runtime.RuntimeDataResolver;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Maps;
 import com.google.template.soy.data.SoyMapData;
-import controllers.MyAssets;
+import controllers.PlayGateway;
 import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -21,9 +21,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
-* Created by mati on 30/05/2014.
-*/
 public class AssetsRuntimeResolver implements RuntimeDataResolver {
 
     private final static Pattern FILE_PATTERN = Pattern.compile(".+/public/(.+)");
@@ -54,7 +51,7 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
                             if (matcher.find()) {
                                 final String asset = matcher.group(1).replace(".md5]", "");
                                 final String key = "assets." + asset.replace("/", ".");
-                                String versioned = MyAssets.versioned(asset);
+                                String versioned = PlayGateway.versioned(asset);
                                 Logger.info(String.format("key:%s - value:%s", key, versioned));
                                 cache.put(key, versioned);
                             }
@@ -77,7 +74,7 @@ public class AssetsRuntimeResolver implements RuntimeDataResolver {
                 if (matcher.find()) {
                     final String asset = matcher.group(1);
                     final String key = "assets." + asset.replace("/", ".");
-                    String versioned = MyAssets.versioned(asset);
+                    String versioned = PlayGateway.versioned(asset);
                     Logger.debug(String.format("key:%s - value:%s", key, versioned));
                     try {
                         root.put(key, versioned);

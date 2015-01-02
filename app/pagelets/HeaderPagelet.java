@@ -4,9 +4,6 @@ import play.libs.F;
 
 import javax.inject.Singleton;
 
-/**
- * Created by mati on 03/02/2014.
- */
 @Singleton
 public class HeaderPagelet {
 

@@ -12,8 +12,8 @@ import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessor;
 import com.github.mati1979.play.soyplugin.ajax.process.OutputProcessors;
 import com.github.mati1979.play.soyplugin.ajax.process.google.GoogleClosureOutputProcessor;
 import com.github.mati1979.play.soyplugin.ajax.runtime.SoyHashesRuntimeDataResolver;
-import com.github.mati1979.play.soyplugin.bundle.DefaultSoyMsgBundleResolver;
-import com.github.mati1979.play.soyplugin.bundle.SoyMsgBundleResolver;
+import com.github.mati1979.play.soyplugin.compile.CompiledTemplatesHolder;
+import com.github.mati1979.play.soyplugin.compile.DefaultCompiledTemplatesHolder;
 import com.github.mati1979.play.soyplugin.compile.DefaultTofuCompiler;
 import com.github.mati1979.play.soyplugin.compile.TofuCompiler;
 import com.github.mati1979.play.soyplugin.config.ConfigDefaults;
@@ -27,16 +27,16 @@ import com.github.mati1979.play.soyplugin.global.compile.DefaultCompileTimeGloba
 import com.github.mati1979.play.soyplugin.global.runtime.DefaultGlobalRuntimeModelResolver;
 import com.github.mati1979.play.soyplugin.global.runtime.GlobalRuntimeModelResolver;
 import com.github.mati1979.play.soyplugin.global.runtime.RuntimeDataResolver;
-import com.github.mati1979.play.soyplugin.holder.CompiledTemplatesHolder;
-import com.github.mati1979.play.soyplugin.holder.DefaultCompiledTemplatesHolder;
-import com.github.mati1979.play.soyplugin.locale.LocaleProvider;
-import com.github.mati1979.play.soyplugin.locale.PlayLocaleProvider;
-import com.github.mati1979.play.soyplugin.plugin.DefaultSoy;
-import com.github.mati1979.play.soyplugin.plugin.Soy;
+import com.github.mati1979.play.soyplugin.i18n.DefaultSoyMsgBundleResolver;
+import com.github.mati1979.play.soyplugin.i18n.LocaleProvider;
+import com.github.mati1979.play.soyplugin.i18n.PlayLocaleProvider;
+import com.github.mati1979.play.soyplugin.i18n.SoyMsgBundleResolver;
 import com.github.mati1979.play.soyplugin.render.DefaultTemplateRenderer;
 import com.github.mati1979.play.soyplugin.render.TemplateRenderer;
-import com.github.mati1979.play.soyplugin.template.FileSystemTemplateFilesResolver;
-import com.github.mati1979.play.soyplugin.template.TemplateFilesResolver;
+import com.github.mati1979.play.soyplugin.resolve.FileSystemTemplateFilesResolver;
+import com.github.mati1979.play.soyplugin.resolve.TemplateFilesResolver;
+import com.github.mati1979.play.soyplugin.soy.DefaultSoy;
+import com.github.mati1979.play.soyplugin.soy.Soy;
 import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -51,9 +51,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by mati on 02/02/2014.
- */
 public class PlaySoyConfigExt extends AbstractModule {
 
     @Override
@@ -69,7 +66,6 @@ public class PlaySoyConfigExt extends AbstractModule {
         bind(Soy.class).to(DefaultSoy.class).in(Singleton.class);
         bind(ConfigDefaults.class).to(DefaultConfigDefaults.class).in(Singleton.class);
         bind(SoyViewConf.class).to(PlaySoyViewConf.class).in(Singleton.class);
-
 
         bind(SoyAllowedUrlsResolver.class).to(DefaultSoyAllowedUrlsResolver.class).in(Singleton.class);
         bind(HashFileGenerator.class).to(MD5HashFileGenerator.class).in(Singleton.class);
@@ -115,7 +111,7 @@ public class PlaySoyConfigExt extends AbstractModule {
         systemRuntimeResolvers.add(assets);
         systemRuntimeResolvers.add(loggedIn);
 
-        return new DefaultGlobalRuntimeModelResolver(systemRuntimeResolvers, Lists.newArrayList());
+        return new DefaultGlobalRuntimeModelResolver(systemRuntimeResolvers);
     }
 
 }
